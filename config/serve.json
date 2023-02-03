@@ -1,0 +1,31 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/spfx-serve.schema.json",
+  "port": 4321,
+  "https": true,
+  "serveConfigurations": {
+    "default": {
+      "pageUrl": "https://nguardclt.sharepoint.com/sites/niodev/Client%20%20Partner%20Data/Forms/AllItems.aspx",
+      "customActions": {
+        "fd5c7a2d-b394-40d1-b61b-47e40e84f6bd": {
+          "location": "ClientSideExtension.ListViewCommandSet.CommandBar",
+          "properties": {
+            "sampleTextOne": "One item is selected in the list",
+            "sampleTextTwo": "This command is always visible."
+          }
+        }
+      }
+    },
+    "proCliBtn": {
+      "pageUrl": "https://nguardclt.sharepoint.com/sites/niodev/Client%20%20Partner%20Data/Forms/AllItems.aspx",
+      "customActions": {
+        "fd5c7a2d-b394-40d1-b61b-47e40e84f6bd": {
+          "location": "ClientSideExtension.ListViewCommandSet.CommandBar",
+          "properties": {
+            "sampleTextOne": "One item is selected in the list",
+            "sampleTextTwo": "This command is always visible."
+          }
+        }
+      }
+    }
+  }
+}

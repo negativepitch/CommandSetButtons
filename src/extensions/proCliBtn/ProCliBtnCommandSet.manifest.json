@@ -1,0 +1,26 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/command-set-extension-manifest.schema.json",
+
+  "id": "fd5c7a2d-b394-40d1-b61b-47e40e84f6bd",
+  "alias": "ProCliBtnCommandSet",
+  "componentType": "Extension",
+  "extensionType": "ListViewCommandSet",
+
+  "version": "*",
+  "manifestVersion": 2,
+
+  "requiresCustomScript": false,
+
+  "items": {
+    "COMMAND_1": {
+      "title": { "default": "New Project" },
+      "iconImageUrl": "./icons/project_icon.png",
+      "type": "command"
+    },
+    "COMMAND_2": {
+      "title": { "default": "New Client" },
+      "iconImageUrl": "./icons/client_icon.png",
+      "type": "command"
+    }
+  }
+}
