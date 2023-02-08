@@ -3,7 +3,7 @@
   "solution": {
     "name": "pro-cli-btn-client-side-solution",
     "id": "1b44b097-7e6e-4bfd-8b36-453f387cefc4",
-    "version": "4.0.0.0",
+    "version": "7.0.0.0",
     "includeClientSideAssets": true,
     "skipFeatureDeployment": true,
     "isDomainIsolated": false,
@@ -30,7 +30,7 @@
         "title": "Application Extension - Deployment of custom action",
         "description": "Deploys a custom action with ClientSideComponentId association",
         "id": "2c3a1516-2cf1-45bd-9df0-f09688307ada",
-        "version": "4.0.0.0",
+        "version": "7.0.0.0",
         "assets": {
           "elementManifests": [
             "elements.xml",

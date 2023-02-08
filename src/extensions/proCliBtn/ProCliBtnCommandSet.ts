@@ -26,13 +26,15 @@ export default class ProCliBtnCommandSet extends BaseListViewCommandSet<IProCliB
   public onInit(): Promise<void> {
     Log.info(LOG_SOURCE, 'Initialized ProCliBtnCommandSet');
 
-    console.log(":: AMB SPFX Extension - ProCliBtnCommandSet");
+    console.log(":: AMB SPFX Extension - ProCliBtnCommandSet V7");
     console.log(this.context);
     // initial state of the command's visibility
     const compareOneCommand: Command = this.tryGetCommand('COMMAND_1');
-    compareOneCommand.visible = this.context.pageContext.list.title == 'Client & Partner Data';
     const compareTwoCommand: Command = this.tryGetCommand('COMMAND_2');
+    compareOneCommand.visible = this.context.pageContext.list.title == 'Client & Partner Data';
     compareTwoCommand.visible = this.context.pageContext.list.title == 'Client & Partner Data';
+
+    console.log(":: Extension visible - ", this.context.pageContext.list.title == 'Client & Partner Data'," ::")
 
     this.context.listView.listViewStateChangedEvent.add(this, this._onListViewStateChanged);
 

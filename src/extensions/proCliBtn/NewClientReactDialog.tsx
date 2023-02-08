@@ -26,7 +26,6 @@ interface ISPFolderExists {
   value: boolean
 }
 
-
 class CustomDialogContent extends React.Component<IDialogContentProps, IDialogState> {
     private _characterLimit:number;
     constructor(props: IDialogContentProps | Readonly<IDialogContentProps>,state:IDialogState) {
@@ -128,10 +127,12 @@ export default class NewClientDialog extends BaseDialog {
           } else {
             this.createFolderCopy(newFolderName).then((success:boolean) => {
               console.log("createFolderCopy: ", success);
-              Dialog.alert(`The client '${ newFolderName }' has been created!`).then(() => {
-                // 3. Refresh library
-                location.href = newFolderUrl;
-              });
+              location.href = newFolderUrl;
+
+              // Dialog.alert(`The client '${ newFolderName }' has been created!`).then(() => {
+              //   // 3. Refresh library
+              //   location.href = newFolderUrl;
+              // });
               this.close();
             })
           }
@@ -153,7 +154,7 @@ export default class NewClientDialog extends BaseDialog {
 
     private createFolderCopy(folderName:string): Promise<boolean> {
       const rootPath = this.context.pageContext.web.absoluteUrl.replace(this.context.pageContext.web.serverRelativeUrl,"");
-      const listPath = rootPath + this.context.pageContext.list.serverRelativeUrl + "/__ClientFolderTemplate";
+      const listPath = rootPath + this.context.pageContext.list.serverRelativeUrl + "/01. Client Folder Template";
       const destPath = rootPath + this.context.listView.list.serverRelativeUrl + "/" + folderName;
       const spOpts: ISPHttpClientOptions = {
         body: `{

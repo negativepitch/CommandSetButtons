@@ -116,6 +116,8 @@ export default class NewProjectDialog extends BaseDialog {
         const newFolderName = val.trim();
         const tenantUrl = this.context.pageContext.web.absoluteUrl.replace(this.context.pageContext.web.serverRelativeUrl,'')
         const newFolderUrl =  tenantUrl + this.context.listView.folderInfo.folderPath + "/" + newFolderName;
+        const newFolderRelativeUrl =  this.context.listView.folderInfo.folderPath + "/" + newFolderName;
+
         // 1. Check For Duplicate Name
         this.isFolderDuplicate(newFolderName,this.context.listView.folderInfo.folderPath).then((response) => {
           const isDuplicate = response.value
@@ -125,11 +127,23 @@ export default class NewProjectDialog extends BaseDialog {
             this.close();
           } else {
             this.createFolderCopy(newFolderName).then((success:boolean) => {
-              console.log("createFolderCopy: ", success);
-              Dialog.alert(`The project '${ newFolderName }' has been created!`).then(() => {
-                // 3. Refresh library
-                location.href = newFolderUrl;
+
+              // 2. Get New Folder Item ID
+              this.getFolderIDByPath(newFolderRelativeUrl).then((spid) => {
+                console.log(":: New Folder ID -- ",spid);
+                // 3. Update isProjectFolder Property of New Folder
+                this.updateFolderMetadata(spid).then((success:boolean) => {
+                  console.log(":: updateFolderMetadata SUCCESS::");
+                  location.href = newFolderUrl;
+                })
+
+
               });
+
+              // Dialog.alert(`The project '${ newFolderName }' has been created!`).then(() => {
+              //   // 3. Refresh library
+              //   location.href = newFolderUrl;
+              // });
               this.close();
             })
           }
@@ -151,7 +165,7 @@ export default class NewProjectDialog extends BaseDialog {
 
     private createFolderCopy(folderName:string): Promise<boolean> {
       const rootPath = this.context.pageContext.web.absoluteUrl.replace(this.context.pageContext.web.serverRelativeUrl,"");
-      const listPath = rootPath + this.context.pageContext.list.serverRelativeUrl + "/__ProjectFolderTemplate";
+      const listPath = rootPath + this.context.pageContext.list.serverRelativeUrl + "/02. Project Folder Template";
       const destPath = rootPath + this.context.listView.folderInfo.folderPath + "/" + folderName;
       const spOpts: ISPHttpClientOptions = {
         body: `{
@@ -175,6 +189,44 @@ export default class NewProjectDialog extends BaseDialog {
   
       return this.context.spHttpClient
       .post(`${this.context.pageContext.web.absoluteUrl}/_api/SP.MoveCopyUtil.CopyFolderByPath()`,SPHttpClient.configurations.v1,spOpts)
+      .then(() => {
+        return true;
+      }).catch((err:any) => {
+        console.log(err);
+        return false;
+      })
+    }
+
+    private getFolderIDByPath(path:string): Promise<number> {
+      console.log("path",path);
+      const endpoint = `${this.context.pageContext.web.absoluteUrl}/_api/web/getfolderbyserverrelativeurl('${path}')?$expand=ListItemAllFields`
+      console.log(endpoint);
+      return this.context.spHttpClient.get(endpoint,SPHttpClient.configurations.v1)
+        .then((response: SPHttpClientResponse) => {
+          return response.json().then(item => {
+            return item['ListItemAllFields']['ID']
+          });
+        })
+        .catch(() => {});
+      
+    }
+
+    private updateFolderMetadata(folderID:number): Promise<boolean> {
+      const spOpts: ISPHttpClientOptions = {
+        body: `{"IsProjectFolder":true}`,
+        headers: {
+          'Content-Type': 'application/json;odata=nometadata',
+          'Accept': 'application/json;odata=verbose',
+          'odata-version': '',
+          'IF-MATCH': '*',
+          'X-HTTP-Method': 'MERGE'
+        }
+      };
+      const endpoint = `${this.context.pageContext.web.absoluteUrl}/_api/web/lists/getbytitle('Client & Partner Data')/items(${folderID})`;
+      console.log(endpoint);
+      console.log(spOpts);
+      return this.context.spHttpClient
+      .post(endpoint,SPHttpClient.configurations.v1,spOpts)
       .then(() => {
         return true;
       }).catch((err:any) => {
