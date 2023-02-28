@@ -135,6 +135,7 @@ export default class NewProjectDialog extends BaseDialog {
                 this.updateFolderMetadata(spid).then((success:boolean) => {
                   console.log(":: updateFolderMetadata SUCCESS::");
                   location.href = newFolderUrl;
+                  this.close();                  
                 })
 
 
@@ -144,7 +145,7 @@ export default class NewProjectDialog extends BaseDialog {
               //   // 3. Refresh library
               //   location.href = newFolderUrl;
               // });
-              this.close();
+              
             })
           }
         })

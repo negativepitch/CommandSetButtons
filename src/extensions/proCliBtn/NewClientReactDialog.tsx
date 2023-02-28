@@ -128,12 +128,12 @@ export default class NewClientDialog extends BaseDialog {
             this.createFolderCopy(newFolderName).then((success:boolean) => {
               console.log("createFolderCopy: ", success);
               location.href = newFolderUrl;
-
+              this.close();
               // Dialog.alert(`The client '${ newFolderName }' has been created!`).then(() => {
               //   // 3. Refresh library
               //   location.href = newFolderUrl;
               // });
-              this.close();
+              
             })
           }
         })
